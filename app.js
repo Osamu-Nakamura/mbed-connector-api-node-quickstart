@@ -16,7 +16,7 @@ var port = process.env.PORT || 8080;
 // Paths to resources on the endpoints
 var blinkResourceURI = '/3201/0/5850';
 var blinkPatternResourceURI = '/3201/0/5853';
-var buttonResourceURI = '/3200/0/5501';
+var ZXingURI = '/3202/0/5700';
 
 // Instantiate an mbed Device Connector object
 var mbedConnectorApi = new MbedConnectorApi({
@@ -80,8 +80,8 @@ io.on('connection', function (socket) {
   sockets.push(socket);
 
   socket.on('subscribe-to-presses', function (data) {
-    // Subscribe to all changes of resource /3200/0/5501 (button presses)
-    mbedConnectorApi.putResourceSubscription(data.endpointName, buttonResourceURI, function(error) {
+    // Subscribe to all changes of resource /3202/0/5700 (Barcode decoded Data)
+    mbedConnectorApi.putResourceSubscription(data.endpointName, ZXingURI, function(error) {
       if (error) throw error;
       socket.emit('subscribed-to-presses', {
         endpointName: data.endpointName
@@ -90,8 +90,8 @@ io.on('connection', function (socket) {
   });
 
   socket.on('unsubscribe-to-presses', function(data) {
-    // Unsubscribe from the resource /3200/0/5501 (button presses)
-    mbedConnectorApi.deleteResourceSubscription(data.endpointName, buttonResourceURI, function(error) {
+    // Unsubscribe from the resource /3202/0/5700 (Barcode decoded Data)
+    mbedConnectorApi.deleteResourceSubscription(data.endpointName, ZXingURI, function(error) {
       if (error) throw error;
       socket.emit('unsubscribed-to-presses', {
         endpointName: data.endpointName
@@ -100,8 +100,8 @@ io.on('connection', function (socket) {
   });
 
   socket.on('get-presses', function(data) {
-    // Read data from GET resource /3200/0/5501 (num button presses)
-    mbedConnectorApi.getResourceValue(data.endpointName, buttonResourceURI, function(error, value) {
+    // Read data from GET resource /3202/0/5700 (Barcode decoded Data)
+    mbedConnectorApi.getResourceValue(data.endpointName, ZXingURI, function(error, value) {
       if (error) throw error;
       socket.emit('presses', {
         endpointName: data.endpointName,
