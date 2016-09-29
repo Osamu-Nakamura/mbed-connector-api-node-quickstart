@@ -136,7 +136,7 @@ io.on('connection', function (socket) {
 // When notifications are received through the notification channel, pass the
 // button presses data to all connected browser windows
 mbedConnectorApi.on('notification', function(notification) {
-  if (notification.path === buttonResourceURI) {
+  if (notification.path === ZXingURI) {
     sockets.forEach(function(socket) {
       socket.emit('presses', {
         endpointName: notification.ep,
